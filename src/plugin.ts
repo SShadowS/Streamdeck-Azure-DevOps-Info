@@ -1,12 +1,14 @@
 import streamDeck, { LogLevel } from "@elgato/streamdeck";
-
 import { IncrementCounter } from "./actions/increment-counter";
+import { AzureDevOpsClient } from "./azure-devops/api-client";
 
-// We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information
+// Initialize Azure DevOps client
+const azureClient = new AzureDevOpsClient(
+    process.env.AZURE_ORGANIZATION || '',
+    process.env.AZURE_PROJECT || '',
+    process.env.AZURE_PAT || ''
+);
+
 streamDeck.logger.setLevel(LogLevel.TRACE);
-
-// Register the increment action.
 streamDeck.actions.registerAction(new IncrementCounter());
-
-// Finally, connect to the Stream Deck.
 streamDeck.connect();

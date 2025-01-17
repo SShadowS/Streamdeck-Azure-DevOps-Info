@@ -14,7 +14,12 @@
 			],
 			"resolveSourceMapLocations": [
 				"${workspaceFolder}/**"
-			]
+			],
+			"env": {
+				"AZURE_ORGANIZATION": "your-organization",
+				"AZURE_PROJECT": "your-project",
+				"AZURE_PAT": "your-pat-token"
+			}
 		}
 	]
 }
