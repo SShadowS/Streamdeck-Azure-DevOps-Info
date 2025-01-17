@@ -1,5 +1,5 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
-import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck/events/actions";
+import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
 import { WorkItem } from "../azure-devops/types";
 
@@ -50,9 +50,13 @@ export class WorkItemsAction extends SingletonAction<WorkItemSettings> {
             const workItems = await this.client.getWorkItems(queryId);
             await ev.action.setTitle(`${workItems.length}`);
             await ev.action.setImage(`imgs/actions/work-items/${workItems.length > 0 ? 'active' : 'inactive'}.png`);
-        } catch (error) {
+        } catch (error: unknown) {
             await ev.action.setTitle("Error");
-            console.error('Failed to fetch work items:', error);
+            if (error instanceof Error) {
+                console.error('Failed to fetch work items:', error);
+            } else {
+                console.error('Failed to fetch work items:', String(error));
+            }
         }
     }
 }

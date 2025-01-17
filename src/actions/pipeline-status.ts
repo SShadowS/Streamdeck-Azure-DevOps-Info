@@ -1,6 +1,6 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
 import { StateManager } from "../state/state-manager";
-import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck/events/actions";
+import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
 import { PipelineStatus } from "../azure-devops/types";
 
@@ -57,8 +57,12 @@ export class PipelineStatusAction extends SingletonAction<PipelineSettings> {
             this.stateManager.recordSuccess();
             await ev.action.setTitle(status.state);
             await ev.action.setImage(`imgs/actions/pipeline/${status.state.toLowerCase()}.png`);
-        } catch (error) {
-            this.stateManager.recordError(error);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                this.stateManager.recordError(error);
+            } else {
+                this.stateManager.recordError(new Error(String(error)));
+            }
             await ev.action.setTitle("Error");
         }
     }

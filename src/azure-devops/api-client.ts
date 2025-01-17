@@ -20,7 +20,7 @@ export class AzureDevOpsClient {
             // Check cache first
             const cached = this.cache.get(endpoint);
             if (cached && Date.now() - cached.timestamp < this.cacheDuration) {
-                return cached.data;
+                return cached.data as T;
             }
 
             const auth = Buffer.from(`:${this.pat}`).toString('base64');
@@ -39,17 +39,21 @@ export class AzureDevOpsClient {
                 throw new Error(`Azure DevOps API error: ${response.statusText}`);
             }
 
-            const data = await response.json();
+            const data = await response.json() as T;
             this.cache.set(endpoint, { data, timestamp: Date.now() });
             return data;
-        } catch (error) {
-            this.logger.log(`Request failed: ${error.message}`, 'error');
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                this.logger.log(`Request failed: ${error.message}`, 'error');
+            } else {
+                this.logger.log(`Request failed: ${String(error)}`, 'error');
+            }
             if (retryCount < this.maxRetries) {
                 this.logger.log(`Retrying (${retryCount + 1}/${this.maxRetries})...`, 'warn');
                 await new Promise(resolve => setTimeout(resolve, this.retryDelay));
                 return this.makeRequest(endpoint, retryCount + 1);
             }
-            throw error;
+            throw error instanceof Error ? error : new Error(String(error));
         }
     }
 
