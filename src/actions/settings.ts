@@ -24,6 +24,26 @@ export class SettingsAction extends SingletonAction<Settings> {
             process.env.AZURE_PROJECT || '',
             process.env.AZURE_PAT || ''
         );
+        window.streamDeck.testConnection = this.testConnection.bind(this);
+    }
+
+    private async testConnection(settings: Settings): Promise<{ success: boolean }> {
+        if (!settings.organization || !settings.project || !settings.pat) {
+            return { success: false };
+        }
+
+        const testClient = new AzureDevOpsClient(
+            settings.organization,
+            settings.project,
+            settings.pat
+        );
+
+        try {
+            await testClient.testConnection();
+            return { success: true };
+        } catch (error) {
+            return { success: false };
+        }
     }
 
     override async onWillAppear(ev: WillAppearEvent<Settings>): Promise<void> {

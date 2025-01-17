@@ -81,4 +81,16 @@ export class AzureDevOpsClient {
     public async getWorkItems(queryId: string): Promise<any> {
         return this.makeRequest(`/wit/wiql/${queryId}?api-version=7.1-preview.2`);
     }
+
+    public async testConnection(): Promise<boolean> {
+        try {
+            await this.makeRequest('/git/repositories?api-version=7.1-preview.1');
+            return true;
+        } catch (error) {
+            if (error instanceof Error && error.message.includes('401')) {
+                return false;
+            }
+            return false;
+        }
+    }
 }

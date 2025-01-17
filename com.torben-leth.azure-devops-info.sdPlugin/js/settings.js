@@ -9,6 +9,36 @@ const $retryDelay = document.getElementById('retryDelay');
     el.addEventListener('change', saveSettings);
 });
 
+const $testConnection = document.getElementById('testConnection');
+const $testResult = document.getElementById('testResult');
+
+$testConnection.addEventListener('click', async () => {
+    const settings = {
+        organization: $organization.value,
+        project: $project.value,
+        pat: $pat.value
+    };
+
+    if (!settings.organization || !settings.project || !settings.pat) {
+        $testResult.textContent = 'Please fill all fields';
+        $testResult.style.color = 'red';
+        return;
+    }
+
+    $testResult.textContent = 'Testing connection...';
+    $testResult.style.color = 'inherit';
+
+    try {
+        const result = await window.streamDeck.testConnection(settings);
+        $testResult.textContent = result.success ? 'Connection successful!' : 'Connection failed';
+        $testResult.style.color = result.success ? 'green' : 'red';
+    } catch (error) {
+        $testResult.textContent = 'Connection failed';
+        $testResult.style.color = 'red';
+        console.error('Connection test failed:', error);
+    }
+});
+
 function saveSettings() {
     const settings = {
         organization: $organization.value,
