@@ -2,6 +2,7 @@ import streamDeck, { LogLevel } from "@elgato/streamdeck";
 import { IncrementCounter } from "./actions/increment-counter";
 import { PipelineStatusAction } from "./actions/pipeline-status";
 import { PullRequestsAction } from "./actions/pull-requests";
+import { WorkItemsAction } from "./actions/work-items";
 import { AzureDevOpsClient } from "./azure-devops/api-client";
 
 // Initialize Azure DevOps client
@@ -15,4 +16,5 @@ streamDeck.logger.setLevel(LogLevel.TRACE);
 streamDeck.actions.registerAction(new IncrementCounter());
 streamDeck.actions.registerAction(new PipelineStatusAction());
 streamDeck.actions.registerAction(new PullRequestsAction());
+streamDeck.actions.registerAction(new WorkItemsAction());
 streamDeck.connect();
