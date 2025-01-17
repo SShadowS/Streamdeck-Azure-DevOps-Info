@@ -18,6 +18,22 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Settings",
+			"UUID": "com.torben-leth.azure-devops-info.settings",
+			"Icon": "imgs/actions/settings/icon",
+			"Tooltip": "Configure Azure DevOps settings",
+			"PropertyInspectorPath": "ui/settings.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/settings/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "Azure DevOps Info",
