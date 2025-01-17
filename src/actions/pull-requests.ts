@@ -1,5 +1,5 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
-import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck/events/actions";
+import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
 import { PullRequest } from "../azure-devops/types";
 
@@ -48,7 +48,7 @@ export class PullRequestsAction extends SingletonAction<PullRequestSettings> {
 
         try {
             const prs = await this.client.getPullRequests(repositoryId);
-            const myPrs = prs.filter(pr => pr.createdBy.displayName === process.env.AZURE_USER);
+            const myPrs = prs.filter((pr: PullRequest) => pr.createdBy.displayName === process.env.AZURE_USER);
             await ev.action.setTitle(`${myPrs.length}`);
             await ev.action.setImage(`imgs/actions/pull-requests/${myPrs.length > 0 ? 'active' : 'inactive'}.png`);
         } catch (error) {
