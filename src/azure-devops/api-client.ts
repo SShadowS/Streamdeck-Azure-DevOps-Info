@@ -1,7 +1,7 @@
 import { Logger } from "../utils/logger";
 
 export class AzureDevOpsClient {
-    private readonly logger = Logger.getInstance();
+    private readonly logger = Logger.getInstance('AzureDevOpsClient');
     private readonly baseUrl: string;
     private readonly pat: string;
     private cache: Map<string, { data: any, timestamp: number }> = new Map();

@@ -1,36 +1,50 @@
-import streamDeck from "@elgato/streamdeck";
+import streamDeck, { LogLevel } from "@elgato/streamdeck";
 
 export class Logger {
     private static instance: Logger;
-    private constructor() {}
+    private scopedLogger: any;
 
-    public static getInstance(): Logger {
+    private constructor(scope?: string) {
+        this.scopedLogger = scope ? 
+            streamDeck.logger.createScope(scope) : 
+            streamDeck.logger;
+    }
+
+    public static getInstance(scope?: string): Logger {
         if (!Logger.instance) {
-            Logger.instance = new Logger();
+            Logger.instance = new Logger(scope);
         }
         return Logger.instance;
     }
 
     public log(message: string, level: 'trace' | 'debug' | 'info' | 'warn' | 'error' = 'info'): void {
         const timestamp = new Date().toISOString();
-        const logMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+        const logMessage = `[${timestamp}] ${message}`;
         
         switch (level) {
             case 'trace':
-                streamDeck.logger.trace(logMessage);
+                this.scopedLogger.trace(logMessage);
                 break;
             case 'debug':
-                streamDeck.logger.debug(logMessage);
+                this.scopedLogger.debug(logMessage);
                 break;
             case 'info':
-                streamDeck.logger.info(logMessage);
+                this.scopedLogger.info(logMessage);
                 break;
             case 'warn':
-                streamDeck.logger.warn(logMessage);
+                this.scopedLogger.warn(logMessage);
                 break;
             case 'error':
-                streamDeck.logger.error(logMessage);
+                this.scopedLogger.error(logMessage);
                 break;
         }
+    }
+
+    public setLevel(level: LogLevel): void {
+        this.scopedLogger.setLevel(level);
+    }
+
+    public createScope(scope: string): Logger {
+        return new Logger(scope);
     }
 }

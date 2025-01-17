@@ -15,7 +15,7 @@ export class StateManager {
         requestCount: 0,
         errorCount: 0
     };
-    private logger = Logger.getInstance();
+    private logger = Logger.getInstance('StateManager');
 
     private constructor() {}
 
