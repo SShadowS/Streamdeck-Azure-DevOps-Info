@@ -20,6 +20,38 @@
 			]
 		},
 		{
+			"Name": "Pull Requests",
+			"UUID": "com.torben-leth.azure-devops-info.pull-requests",
+			"Icon": "imgs/actions/pull-requests/icon",
+			"Tooltip": "Show your open pull requests count",
+			"PropertyInspectorPath": "ui/pull-requests.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/pull-requests/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"Name": "Pipeline Status",
+			"UUID": "com.torben-leth.azure-devops-info.pipeline",
+			"Icon": "imgs/actions/pipeline/icon",
+			"Tooltip": "Show pipeline status",
+			"PropertyInspectorPath": "ui/pipeline-status.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/pipeline/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
 			"Name": "Settings",
 			"UUID": "com.torben-leth.azure-devops-info.settings",
 			"Icon": "imgs/actions/settings/icon",
