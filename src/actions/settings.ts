@@ -1,4 +1,5 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
+declare const window: Window;
 import { StateManager } from "../state/state-manager";
 import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
