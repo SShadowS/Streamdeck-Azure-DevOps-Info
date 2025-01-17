@@ -7,6 +7,8 @@ type Settings = {
     project?: string;
     pat?: string;
     cacheDuration?: number;
+    maxRetries?: number;
+    retryDelay?: number;
 };
 
 @action({ UUID: "com.torben-leth.azure-devops-info.settings" })
@@ -31,7 +33,7 @@ export class SettingsAction extends SingletonAction<Settings> {
     }
 
     private async updateSettings(ev: WillAppearEvent<Settings> | KeyDownEvent<Settings>): Promise<void> {
-        const { organization, project, pat, cacheDuration } = ev.payload.settings;
+        const { organization, project, pat, cacheDuration, maxRetries, retryDelay } = ev.payload.settings;
         
         if (organization && project && pat) {
             process.env.AZURE_ORGANIZATION = organization;
@@ -40,6 +42,10 @@ export class SettingsAction extends SingletonAction<Settings> {
             
             if (cacheDuration) {
                 this.client.setCacheDuration(cacheDuration);
+            }
+            
+            if (maxRetries && retryDelay) {
+                this.client.setRetryPolicy(maxRetries, retryDelay);
             }
             
             this.client.clearCache();
