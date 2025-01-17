@@ -1,0 +1,63 @@
+{
+	"Name": "Azure DevOps Info",
+	"Version": "0.1.0.0",
+	"Author": "Torben Leth",
+	"Actions": [
+		{
+			"Name": "Counter",
+			"UUID": "com.torben-leth.azure-devops-info.increment",
+			"Icon": "imgs/actions/counter/icon",
+			"Tooltip": "Displays a count, which increments by one on press.",
+			"PropertyInspectorPath": "ui/increment-counter.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/counter/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		},
+		{
+			"Name": "Settings",
+			"UUID": "com.torben-leth.azure-devops-info.settings",
+			"Icon": "imgs/actions/settings/icon",
+			"Tooltip": "Configure Azure DevOps settings",
+			"PropertyInspectorPath": "ui/settings.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/settings/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		}
+	],
+	"Category": "Azure DevOps Info",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Show PRs and more",
+	"Icon": "imgs/plugin/marketplace",
+	"SDKVersion": 2,
+	"Software": {
+		"MinimumVersion": "6.4"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "10.15"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"UUID": "com.torben-leth.azure-devops-info"
+}

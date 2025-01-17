@@ -1,0 +1,26 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Attach to Plugin",
+			"type": "node",
+			"request": "attach",
+			"processId": "${command:PickProcess}",
+			"outFiles": [
+				"${workspaceFolder}/bin/**/*.js"
+			],
+			"resolveSourceMapLocations": [
+				"${workspaceFolder}/**"
+			],
+			"env": {
+				"AZURE_ORGANIZATION": "your-organization",
+				"AZURE_PROJECT": "your-project",
+				"AZURE_PAT": "your-pat-token",
+				"AZURE_USER": "Your Display Name"
+			}
+		}
+	]
+}
