@@ -1,6 +1,6 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
 import { StateManager } from "../state/state-manager";
-import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck/events/actions";
+import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
 
 type Settings = {
