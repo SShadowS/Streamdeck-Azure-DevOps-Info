@@ -1,4 +1,5 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
+import { StateManager } from "../state/state-manager";
 import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck/events/actions";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
 
@@ -14,6 +15,7 @@ type Settings = {
 @action({ UUID: "com.torben-leth.azure-devops-info.settings" })
 export class SettingsAction extends SingletonAction<Settings> {
     private client: AzureDevOpsClient;
+    private stateManager = StateManager.getInstance();
 
     constructor() {
         super();
@@ -49,6 +51,7 @@ export class SettingsAction extends SingletonAction<Settings> {
             }
             
             this.client.clearCache();
+            this.stateManager.reset();
             await ev.action.setTitle("Settings Updated");
         } else {
             await ev.action.setTitle("Invalid Settings");

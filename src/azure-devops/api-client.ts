@@ -1,4 +1,7 @@
+import { Logger } from "../utils/logger";
+
 export class AzureDevOpsClient {
+    private readonly logger = Logger.getInstance();
     private readonly baseUrl: string;
     private readonly pat: string;
     private cache: Map<string, { data: any, timestamp: number }> = new Map();
@@ -13,6 +16,7 @@ export class AzureDevOpsClient {
 
     private async makeRequest<T>(endpoint: string, retryCount = 0): Promise<T> {
         try {
+            this.logger.log(`Making request to: ${endpoint}`, 'debug');
             // Check cache first
             const cached = this.cache.get(endpoint);
             if (cached && Date.now() - cached.timestamp < this.cacheDuration) {
@@ -39,7 +43,9 @@ export class AzureDevOpsClient {
             this.cache.set(endpoint, { data, timestamp: Date.now() });
             return data;
         } catch (error) {
+            this.logger.log(`Request failed: ${error.message}`, 'error');
             if (retryCount < this.maxRetries) {
+                this.logger.log(`Retrying (${retryCount + 1}/${this.maxRetries})...`, 'warn');
                 await new Promise(resolve => setTimeout(resolve, this.retryDelay));
                 return this.makeRequest(endpoint, retryCount + 1);
             }

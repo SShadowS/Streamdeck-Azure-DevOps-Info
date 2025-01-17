@@ -1,4 +1,5 @@
 import { action, SingletonAction } from "@elgato/streamdeck";
+import { StateManager } from "../state/state-manager";
 import { WillAppearEvent, KeyDownEvent } from "@elgato/streamdeck/events/actions";
 import { AzureDevOpsClient } from "../azure-devops/api-client";
 import { PipelineStatus } from "../azure-devops/types";
@@ -11,6 +12,7 @@ type PipelineSettings = {
 @action({ UUID: "com.torben-leth.azure-devops-info.pipeline" })
 export class PipelineStatusAction extends SingletonAction<PipelineSettings> {
     private client: AzureDevOpsClient;
+    private stateManager = StateManager.getInstance();
     private interval?: NodeJS.Timeout;
 
     constructor() {
@@ -50,12 +52,14 @@ export class PipelineStatusAction extends SingletonAction<PipelineSettings> {
         }
 
         try {
+            this.stateManager.recordRequest();
             const status = await this.client.getPipelineStatus(pipelineId);
+            this.stateManager.recordSuccess();
             await ev.action.setTitle(status.state);
             await ev.action.setImage(`imgs/actions/pipeline/${status.state.toLowerCase()}.png`);
         } catch (error) {
+            this.stateManager.recordError(error);
             await ev.action.setTitle("Error");
-            console.error('Failed to fetch pipeline status:', error);
         }
     }
 }
